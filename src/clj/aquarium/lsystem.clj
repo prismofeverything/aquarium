@@ -48,7 +48,7 @@
   [seed past future productions]
   (loop [productions productions]
     (if (empty? productions)
-      (conj future (first seed))
+      (conj future (list (first seed)))
       (let [production (first productions)
             [match? result] (transform seed past production)]
         (if match?
@@ -74,5 +74,7 @@
 (defn testl
   []
   (let [p1 (production (condition nil [:a] nil) [:a :b])
-        p2 (production (condition nil [:b] nil) [:b :a :b])]
-    (travel (lsystem nil [p1 p2]) '(:a))))
+        p2 (production (condition [:a] [:b] nil) [:b :a :b])
+        p3 (production (condition nil [:b] [:a]) [:c])
+        p4 (production (condition nil [:b] nil) [:c])]
+    (travel (lsystem [:a :b] [p1 p2 p3 p4]) '(:a))))
